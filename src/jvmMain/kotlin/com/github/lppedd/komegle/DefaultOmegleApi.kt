@@ -115,6 +115,8 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
       "gotMessage" -> StrangerMessage(value as String)
       "commonLikes" -> CommonLikes(parseCommonLikes(value))
       "strangerDisconnected" -> Disconnected
+      "recaptchaRequired" -> ReCaptchaRequired(value as String)
+      "recaptchaRejected" -> ReCaptchaRejected
       else -> throw UnsupportedOperationException("Unknown event type: $type")
     }
   }

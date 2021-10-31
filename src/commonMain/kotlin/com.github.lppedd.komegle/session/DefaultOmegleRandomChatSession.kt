@@ -102,5 +102,17 @@ internal class DefaultOmegleRandomChatSession(private val omegle: Omegle) : Omeg
         listeners.forEach { it.onStoppedTyping(chat) }
       }
     }
+
+    override fun onReCaptchaRequired(reCaptchaId: String) {
+      omegle.getExecutor().submit {
+        listeners.forEach { it.onReCaptchaRequired(chat, reCaptchaId) }
+      }
+    }
+
+    override fun onReCaptchaRejected() {
+      omegle.getExecutor().submit {
+        listeners.forEach { it.onReCaptchaRejected(chat) }
+      }
+    }
   }
 }

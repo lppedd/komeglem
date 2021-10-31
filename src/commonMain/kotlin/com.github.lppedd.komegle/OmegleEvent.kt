@@ -23,7 +23,10 @@ sealed class OmegleEvent {
   data class CommonLikes(val topics: List<String>) : OmegleEvent()
 
   /** Solving a reCAPTCHA is required to connect. */
-  data class RecaptchaRequired(val id: String) : OmegleEvent()
+  data class ReCaptchaRequired(val id: String) : OmegleEvent()
+
+  /** The latest reCAPTCHA has been rejected. */
+  object ReCaptchaRejected : OmegleEvent()
 
   /** The stranger started typing. */
   object StrangerStartedTyping : OmegleEvent()

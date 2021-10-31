@@ -12,4 +12,6 @@ interface OmegleChatBaseListener<T : OmegleChat> {
   fun onMessage(chat: T, message: String) {}
   fun onStartedTyping(chat: T) {}
   fun onStoppedTyping(chat: T) {}
+  fun onReCaptchaRequired(chat: T, reCaptchaId: String) {}
+  fun onReCaptchaRejected(chat: T) {}
 }

@@ -15,4 +15,6 @@ internal interface OmegleEventListener {
   fun onMessage(message: String)
   fun onStartedTyping()
   fun onStoppedTyping()
+  fun onReCaptchaRequired(reCaptchaId: String)
+  fun onReCaptchaRejected()
 }

@@ -59,7 +59,8 @@ internal actual class OmegleEventDispatcher actual constructor(
       is StrangerMessage -> onMessage(event.message)
       is CommonLikes -> onCommonLikes(event.topics)
       Disconnected -> onStrangerDisconnected()
-      is RecaptchaRequired -> {}
+      is ReCaptchaRequired -> onReCaptchaRequired(event.id)
+      ReCaptchaRejected -> onReCaptchaRejected()
     }
   }
 
@@ -91,4 +92,10 @@ internal actual class OmegleEventDispatcher actual constructor(
 
   private fun onCommonLikes(topics: List<String>) =
     listeners.forEach { it.onCommonLikes(topics) }
+
+  private fun onReCaptchaRequired(reCaptchaId: String) =
+    listeners.forEach { it.onReCaptchaRequired(reCaptchaId) }
+
+  private fun onReCaptchaRejected() =
+    listeners.forEach { it.onReCaptchaRejected() }
 }
