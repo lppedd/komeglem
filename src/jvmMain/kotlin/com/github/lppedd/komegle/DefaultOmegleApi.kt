@@ -12,9 +12,7 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
   private val server = getRandomServer()
 
   actual override fun status(): OmegleStatus {
-    val response = Unirest
-      .post("https://omegle.com/status")
-      .asJson()
+    val response = Unirest.post("https://omegle.com/status").asJson()
     return parseStatusInfo(response.body.`object`)
   }
 
@@ -123,17 +121,6 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
     }
   }
 
-  private fun parseIdentDigests(value: Any): List<String> {
-    val ids = value as String
-    return ids.split(",")
-  }
-
-  @Suppress("unchecked_cast")
-  private fun parseCommonLikes(value: Any): List<String> {
-    val array = value as JSONArray
-    return array.toList() as List<String>
-  }
-
   @Suppress("unchecked_cast")
   private fun parseStatusInfo(value: Any): OmegleStatus {
     val json = value as JSONObject
@@ -147,6 +134,17 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
       json.getDouble("timestamp"),
       json.getJSONArray("servers").toList() as List<String>
     )
+  }
+
+  private fun parseIdentDigests(value: Any): List<String> {
+    val ids = value as String
+    return ids.split(",")
+  }
+
+  @Suppress("unchecked_cast")
+  private fun parseCommonLikes(value: Any): List<String> {
+    val array = value as JSONArray
+    return array.toList() as List<String>
   }
 
   private fun getRandomServer() =

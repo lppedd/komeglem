@@ -13,10 +13,9 @@ internal class DefaultOmegleTopicsChatSession(
   private val topics: Array<out String>,
 ) : OmegleTopicsChatSession {
   private val listeners = LinkedHashSet<OmegleTopicsChatListener>(4, 1F)
-
-  private var isConnected = false
   private lateinit var dispatcher: OmegleEventDispatcher
   private lateinit var chat: OmegleTopicsChat
+  private var isConnected = false
 
   override fun addListener(listener: OmegleTopicsChatListener) {
     listeners.add(listener)

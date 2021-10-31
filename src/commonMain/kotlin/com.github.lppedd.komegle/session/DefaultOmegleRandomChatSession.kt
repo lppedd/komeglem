@@ -10,9 +10,8 @@ import com.github.lppedd.komegle.event.OmegleEventListener
  */
 internal class DefaultOmegleRandomChatSession(private val omegle: Omegle) : OmegleRandomChatSession {
   private val listeners = LinkedHashSet<OmegleChatListener>(4, 1F)
-
-  private var isConnected = false
   private lateinit var chat: OmegleTopicsChat
+  private var isConnected = false
 
   override fun addListener(listener: OmegleChatListener) {
     listeners.add(listener)
