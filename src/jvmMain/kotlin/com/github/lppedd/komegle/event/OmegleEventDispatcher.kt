@@ -5,6 +5,7 @@ import com.github.lppedd.komegle.OmegleEvent
 import com.github.lppedd.komegle.OmegleEvent.*
 import com.github.lppedd.komegle.OmegleExecutor
 import com.github.lppedd.komegle.OmegleExecutor.ScheduledTask
+import com.github.lppedd.komegle.OmegleStatus
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
@@ -61,6 +62,7 @@ internal actual class OmegleEventDispatcher actual constructor(
       Disconnected -> onStrangerDisconnected()
       is ReCaptchaRequired -> onReCaptchaRequired(event.id)
       ReCaptchaRejected -> onReCaptchaRejected()
+      is StatusInfo -> onStatusInfo(event.status)
     }
   }
 
@@ -98,4 +100,7 @@ internal actual class OmegleEventDispatcher actual constructor(
 
   private fun onReCaptchaRejected() =
     listeners.forEach { it.onReCaptchaRejected() }
+
+  private fun onStatusInfo(status: OmegleStatus) =
+    listeners.forEach { it.onStatusInfo(status) }
 }

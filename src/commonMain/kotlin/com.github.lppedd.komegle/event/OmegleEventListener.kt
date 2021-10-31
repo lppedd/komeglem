@@ -1,5 +1,7 @@
 package com.github.lppedd.komegle.event
 
+import com.github.lppedd.komegle.OmegleStatus
+
 /**
  * A listener for all the events sent by Omegle.
  *
@@ -17,4 +19,5 @@ internal interface OmegleEventListener {
   fun onStoppedTyping()
   fun onReCaptchaRequired(reCaptchaId: String)
   fun onReCaptchaRejected()
+  fun onStatusInfo(status: OmegleStatus)
 }

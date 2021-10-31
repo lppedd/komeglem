@@ -3,6 +3,7 @@ package com.github.lppedd.komegle
 import com.github.lppedd.komegle.OmegleEvent.*
 import kong.unirest.Unirest
 import kong.unirest.json.JSONArray
+import kong.unirest.json.JSONObject
 
 /**
  * @author Edoardo Luppi
@@ -13,8 +14,8 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
   actual override fun status(): OmegleStatus {
     val response = Unirest
       .post("https://omegle.com/status")
-      .asObject(OmegleStatus::class.java)
-    return response.body
+      .asJson()
+    return parseStatusInfo(response.body.`object`)
   }
 
   actual override fun connect(vararg topics: String): OmegleConnection {
@@ -117,6 +118,7 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
       "strangerDisconnected" -> Disconnected
       "recaptchaRequired" -> ReCaptchaRequired(value as String)
       "recaptchaRejected" -> ReCaptchaRejected
+      "statusInfo" -> StatusInfo(parseStatusInfo(value))
       else -> throw UnsupportedOperationException("Unknown event type: $type")
     }
   }
@@ -130,6 +132,21 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
   private fun parseCommonLikes(value: Any): List<String> {
     val array = value as JSONArray
     return array.toList() as List<String>
+  }
+
+  @Suppress("unchecked_cast")
+  private fun parseStatusInfo(value: Any): OmegleStatus {
+    val json = value as JSONObject
+    return OmegleStatus(
+      json.getInt("count"),
+      json.getJSONArray("antinudeservers").toList() as List<String>,
+      json.getDouble("spyQueueTime"),
+      json.getDouble("spyeeQueueTime"),
+      json.getString("rtmfp"),
+      json.getDouble("antinudepercent"),
+      json.getDouble("timestamp"),
+      json.getJSONArray("servers").toList() as List<String>
+    )
   }
 
   private fun getRandomServer() =

@@ -36,4 +36,7 @@ sealed class OmegleEvent {
 
   /** New message received from the stranger. */
   data class StrangerMessage(val message: String) : OmegleEvent()
+
+  /** The current Omegle status information. */
+  data class StatusInfo(val status: OmegleStatus) : OmegleEvent()
 }
