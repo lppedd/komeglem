@@ -61,18 +61,6 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
     return parseEvents(eventsJson)
   }
 
-  private fun parseEvents(eventsJson: JSONArray): ArrayList<OmegleEvent> {
-    val events = ArrayList<OmegleEvent>(eventsJson.length())
-
-    for (event in eventsJson) {
-      if (event is JSONArray) {
-        events.add(mapEvent(event))
-      }
-    }
-
-    return events
-  }
-
   actual override fun startTyping(clientId: String) {
     Unirest.post("$server/typing")
       .field("id", clientId)
@@ -108,7 +96,13 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
     }
   }
 
-  private fun mapEvent(event: JSONArray): OmegleEvent {
+  private fun parseEvents(eventsJson: JSONArray): List<OmegleEvent> =
+    eventsJson.asSequence()
+      .filterIsInstance<JSONArray>()
+      .map(::parseEvent)
+      .toList()
+
+  private fun parseEvent(event: JSONArray): OmegleEvent {
     val type = event.getString(0)
     val value = event.opt(1)
     return when (type) {
