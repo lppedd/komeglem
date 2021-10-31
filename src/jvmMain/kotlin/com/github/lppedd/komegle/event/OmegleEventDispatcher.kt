@@ -1,10 +1,12 @@
 package com.github.lppedd.komegle.event
 
 import com.github.lppedd.komegle.OmegleApi
+import com.github.lppedd.komegle.OmegleEvent
+import com.github.lppedd.komegle.OmegleEvent.*
 import com.github.lppedd.komegle.OmegleExecutor
 import com.github.lppedd.komegle.OmegleExecutor.ScheduledTask
-import kong.unirest.json.JSONArray
 import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
 
 /**
  * @author Edoardo Luppi
@@ -21,6 +23,7 @@ internal actual class OmegleEventDispatcher actual constructor(
     listeners.add(listener)
   }
 
+  @ExperimentalTime
   actual fun start() {
     eventsTask = executor.schedule(
       ::fetchAndDispatch,
@@ -33,54 +36,38 @@ internal actual class OmegleEventDispatcher actual constructor(
     eventsTask?.cancel()
   }
 
-  actual fun dispatchEvents(events: Any) {
-    dispatchEvents(events as JSONArray)
-  }
-
-  private fun fetchAndDispatch() {
-    val events = api.events(clientId) as JSONArray
-    dispatchEvents(events)
-  }
-
-  private fun dispatchEvents(events: JSONArray) {
+  actual fun dispatchEvents(events: List<OmegleEvent>) {
     for (event in events) {
-      if (Thread.currentThread().isInterrupted) {
-        return
-      }
-
-      if (event is JSONArray) {
-        val type = event.getString(0)
-        val value = event.opt(1)
-        dispatchEvent(type, value)
-      }
+      dispatchEvent(event)
     }
   }
 
+  private fun fetchAndDispatch() {
+    val events = api.events(clientId)
+    dispatchEvents(events)
+  }
+
   @Suppress("unchecked_cast")
-  private fun dispatchEvent(type: String, value: Any?) {
-    when (type) {
-      "waiting"              -> onWaiting()
-      "identDigests"         -> onIdentDigests(value as String)
-      "connected"            -> onConnected()
-      "serverMessage"        -> onServerMessage(value as String)
-      "typing"               -> onStartedTyping()
-      "stoppedTyping"        -> onStoppedTyping()
-      "gotMessage"           -> onMessage(value as String)
-      "commonLikes"          -> onCommonLikes(value as JSONArray)
-      "strangerDisconnected" -> {
-        onStrangerDisconnected()
-        stop()
-      }
+  private fun dispatchEvent(event: OmegleEvent) {
+    when (event) {
+      Waiting -> onWaiting()
+      Connected -> onConnected()
+      is IdentDigests -> onIdentDigests(event.digests)
+      is ServerMessage -> onServerMessage(event.message)
+      StrangerStartedTyping -> onStartedTyping()
+      StrangerStoppedTyping -> onStoppedTyping()
+      is StrangerMessage -> onMessage(event.message)
+      is CommonLikes -> onCommonLikes(event.topics)
+      Disconnected -> onStrangerDisconnected()
+      is RecaptchaRequired -> {}
     }
   }
 
   private fun onWaiting() =
     listeners.forEach { it.onWaiting() }
 
-  private fun onIdentDigests(digest: String) {
-    val digests = digest.split(",")
+  private fun onIdentDigests(digests: List<String>) =
     listeners.forEach { it.onIdentDigests(digests) }
-  }
 
   private fun onConnected() =
     listeners.forEach { it.onConnected() }
@@ -97,12 +84,11 @@ internal actual class OmegleEventDispatcher actual constructor(
   private fun onMessage(message: String) =
     listeners.forEach { it.onMessage(message) }
 
-  private fun onStrangerDisconnected() =
+  private fun onStrangerDisconnected() {
+    stop()
     listeners.forEach { it.onDisconnected() }
-
-  private fun onCommonLikes(topicsJson: JSONArray) {
-    @Suppress("unchecked_cast")
-    val topics = topicsJson.toList() as List<String>
-    listeners.forEach { it.onCommonLikes(topics) }
   }
+
+  private fun onCommonLikes(topics: List<String>) =
+    listeners.forEach { it.onCommonLikes(topics) }
 }

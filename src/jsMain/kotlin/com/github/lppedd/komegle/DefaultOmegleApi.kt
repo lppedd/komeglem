@@ -12,7 +12,7 @@ actual class DefaultOmegleApi : OmegleApi {
     TODO("Not yet implemented")
   }
 
-  actual override fun events(clientId: String): Any {
+  actual override fun events(clientId: String): List<OmegleEvent> {
     TODO("Not yet implemented")
   }
 

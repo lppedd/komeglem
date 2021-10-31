@@ -1,6 +1,7 @@
 package com.github.lppedd.komegle.event
 
 import com.github.lppedd.komegle.OmegleApi
+import com.github.lppedd.komegle.OmegleEvent
 import com.github.lppedd.komegle.OmegleExecutor
 
 /**
@@ -23,5 +24,5 @@ internal expect class OmegleEventDispatcher(
   fun stop()
 
   /** Dispatches Omegle events to registered listeners. */
-  fun dispatchEvents(events: Any)
+  fun dispatchEvents(events: List<OmegleEvent>)
 }

@@ -22,7 +22,7 @@ interface OmegleApi {
    * @param clientId the client ID of the active chat
    */
   @Throws(OmegleApiException::class)
-  fun events(clientId: String): Any
+  fun events(clientId: String): List<OmegleEvent>
 
   /**
    * Signals we have started typing a message.

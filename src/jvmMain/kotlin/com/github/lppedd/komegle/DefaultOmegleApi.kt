@@ -1,6 +1,8 @@
 package com.github.lppedd.komegle
 
+import com.github.lppedd.komegle.OmegleEvent.*
 import kong.unirest.Unirest
+import kong.unirest.json.JSONArray
 
 /**
  * @author Edoardo Luppi
@@ -40,15 +42,35 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
     }
 
     val clientId = json.getString("clientID")
-    val events = json.optJSONArray("events")
+    val eventsJson = json.optJSONArray("events")
+    val events = if (eventsJson != null) {
+      parseEvents(eventsJson)
+    } else {
+      emptyList()
+    }
+
     return OmegleConnection(clientId, events)
   }
 
-  actual override fun events(clientId: String): Any {
+  actual override fun events(clientId: String): List<OmegleEvent> {
     val response = Unirest.post("$server/events")
       .field("id", clientId)
       .asJson()
-    return response.body.array
+
+    val eventsJson = response.body.array
+    return parseEvents(eventsJson)
+  }
+
+  private fun parseEvents(eventsJson: JSONArray): ArrayList<OmegleEvent> {
+    val events = ArrayList<OmegleEvent>(eventsJson.length())
+
+    for (event in eventsJson) {
+      if (event is JSONArray) {
+        events.add(mapEvent(event))
+      }
+    }
+
+    return events
   }
 
   actual override fun startTyping(clientId: String) {
@@ -84,6 +106,34 @@ actual class DefaultOmegleApi actual constructor() : OmegleApi {
     if (response.body != "win") {
       throw OmegleApiException("Error during disconnection: ${response.body}")
     }
+  }
+
+  private fun mapEvent(event: JSONArray): OmegleEvent {
+    val type = event.getString(0)
+    val value = event.opt(1)
+    return when (type) {
+      "waiting" -> Waiting
+      "identDigests" -> IdentDigests(parseIdentDigests(value))
+      "connected" -> Connected
+      "serverMessage" -> ServerMessage(value as String)
+      "typing" -> StrangerStartedTyping
+      "stoppedTyping" -> StrangerStoppedTyping
+      "gotMessage" -> StrangerMessage(value as String)
+      "commonLikes" -> CommonLikes(parseCommonLikes(value))
+      "strangerDisconnected" -> Disconnected
+      else -> throw UnsupportedOperationException("Unknown event type: $type")
+    }
+  }
+
+  private fun parseIdentDigests(value: Any): List<String> {
+    val ids = value as String
+    return ids.split(",")
+  }
+
+  @Suppress("unchecked_cast")
+  private fun parseCommonLikes(value: Any): List<String> {
+    val array = value as JSONArray
+    return array.toList() as List<String>
   }
 
   private fun getRandomServer() =

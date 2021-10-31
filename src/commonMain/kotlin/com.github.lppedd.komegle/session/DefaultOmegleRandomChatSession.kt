@@ -45,13 +45,8 @@ internal class DefaultOmegleRandomChatSession(private val omegle: Omegle) : Omeg
     val (clientId, events) = api.connect()
     val dispatcher = OmegleEventDispatcher(omegle.getExecutor(), api, clientId)
     dispatcher.addListener(RandomOmegleEventListener())
-
     chat = OmegleTopicsRandomChat(api, clientId, dispatcher)
-
-    if (events != null) {
-      dispatcher.dispatchEvents(events)
-    }
-
+    dispatcher.dispatchEvents(events)
     dispatcher.start()
   }
 
