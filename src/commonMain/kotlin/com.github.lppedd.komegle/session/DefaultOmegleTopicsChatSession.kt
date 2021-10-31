@@ -115,9 +115,9 @@ internal class DefaultOmegleTopicsChatSession(
       }
     }
 
-    override fun onReCaptchaRejected() {
+    override fun onReCaptchaRejected(newReCaptchaId: String) {
       omegle.getExecutor().submit {
-        listeners.forEach { it.onReCaptchaRejected(chat) }
+        listeners.forEach { it.onReCaptchaRejected(chat, newReCaptchaId) }
       }
     }
 

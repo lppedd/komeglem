@@ -26,7 +26,7 @@ sealed class OmegleEvent {
   data class ReCaptchaRequired(val id: String) : OmegleEvent()
 
   /** The latest reCAPTCHA has been rejected. */
-  object ReCaptchaRejected : OmegleEvent()
+  data class ReCaptchaRejected(val newId: String) : OmegleEvent()
 
   /** The stranger started typing. */
   object StrangerStartedTyping : OmegleEvent()

@@ -108,9 +108,9 @@ internal class DefaultOmegleRandomChatSession(private val omegle: Omegle) : Omeg
       }
     }
 
-    override fun onReCaptchaRejected() {
+    override fun onReCaptchaRejected(newReCaptchaId: String) {
       omegle.getExecutor().submit {
-        listeners.forEach { it.onReCaptchaRejected(chat) }
+        listeners.forEach { it.onReCaptchaRejected(chat, newReCaptchaId) }
       }
     }
 
