@@ -2,9 +2,14 @@
 
 `komeglem` is an attempt to a multiplatform client for the popular Omegle chatroom.  
 The project itself was born just for fun, and to try out the Kotlin's multiplatform capabilities.  
+
 My priorities now are:
 - to design an API that is easy to use, that avoids logical errors, and is extendable
 - to offer the same API for all supported platforms
+- to type every single event coming from Omegle, as currently events are untyped
+
+What's missing?
+- reCAPTCHA handling
 
 -----
 
