@@ -1,40 +1,35 @@
 # komeglem
 
-`komeglem` is an attempt to a multiplatform client for the popular Omegle chatroom.  
-The project itself was born just for fun, and to try out the Kotlin's multiplatform capabilities.  
-
-My priorities now are:
-- to design an API that is easy to use, that avoids logical errors, and is extendable
-- to offer the same API for all supported platforms
+**komeglem** is an attempt to a multiplatform client for the popular Omegle chatroom.  
+The project is developed just for fun, and to try out Kotlin Multiplatform capabilities.
 
 -----
 
-An example of how to start chatting:
+An example of how to start chatting with a random stranger:
 
 ```kotlin
-val listener = object : OmegleChatListener {
-  override fun onWaiting(chat: OmegleChat) {
+val listener = object : OmegleRandomChatListener {
+  override suspend fun onWaiting(chat: OmegleRandomChat) {
     println("Waiting")
   }
 
-  override fun onConnected(chat: OmegleChat) {
+  override suspend fun onConnected(chat: OmegleRandomChat) {
     println("Connected: ${chat.getClientId()}")
   }
 
-  override fun onDisconnected(chat: OmegleChat) {
+  override suspend fun onDisconnected(chat: OmegleRandomChat) {
     println("Disconnected")
   }
 
-  override fun onMessage(chat: OmegleChat, message: String) {
+  override suspend fun onMessage(chat: OmegleRandomChat, message: String) {
     println("Message: $message")
   }
 }
 
-val omegle = OmegleBuilder().build()
-val chatSession = omegle.newRandomChat()
-chatSession.addListener(listener)
-chatSession.connect()
+val omegle = omegle(/* Optional custom OmegleApiFactory */)
+val session = omegle.newRandomChat(listener)
+session.connect("en")
 
-// Remember to always dispose the Omegle instance
+// Dispose the Omegle instance when not needed anymore
 omegle.dispose()
 ```

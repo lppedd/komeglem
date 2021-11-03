@@ -1,48 +1,12 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
-    <inspection_tool class="ConstantConditionIf" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="ExplicitThis" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="FloatingPointLiteralPrecision" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="FromClosedRangeMigration" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="HasPlatformType" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="reportPlatformArguments" value="true" />
+    <inspection_tool class="GradlePackageUpdate" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="excludeList">
+        <list>
+          <option value="org.junit.jupiter:junit-jupiter-api" />
+        </list>
+      </option>
     </inspection_tool>
-    <inspection_tool class="KotlinDoubleNegation" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="KotlinRedundantOverride" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="NullChecksToSafeCall" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="PackageDirectoryMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="ProhibitJvmOverloadsOnConstructorsOfAnnotationClassesMigration" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="ProhibitRepeatedUseSiteTargetAnnotationsMigration" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="ProhibitTypeParametersForLocalVariablesMigration" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="ProhibitUseSiteTargetAnnotationsOnSuperTypesMigration" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="PublicApiImplicitType" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantEmptyInitializerBlock" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantEnumConstructorInvocation" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantGetter" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantIf" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantInnerClassModifier" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantLabelMigration" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantLambdaArrow" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantLambdaOrAnonymousFunction" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantNotNullExtensionReceiverOfInline" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantRequireNotNullCall" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantReturnLabel" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantSetter" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RedundantWith" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveCurlyBracesFromTemplate" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveEmptyClassBody" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveEmptyParenthesesFromLambdaCall" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveEmptyPrimaryConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveEmptySecondaryConstructorBody" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveExplicitSuperQualifier" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RemoveToStringInStringTemplate" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="ReplaceWithIgnoreCaseEquals" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="RestrictReturnStatementTargetMigration" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="SimplifyWhenWithBooleanConstantCondition" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="UnnecessaryVariable" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="WarningOnMainUnusedParameterMigration" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="WhenWithOnlyElse" enabled="true" level="WARNING" enabled_by_default="true" />
   </profile>
 </component>
