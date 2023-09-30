@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 
 plugins {
-  kotlin("multiplatform") version "1.9.20-Beta2"
+  kotlin("multiplatform")
 }
 
 kotlin {

@@ -12,3 +12,4 @@ plugins {
 }
 
 include(":komeglem-core")
+include(":komeglem-desktop")
