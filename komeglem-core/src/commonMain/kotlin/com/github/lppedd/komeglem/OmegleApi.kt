@@ -12,7 +12,7 @@ public interface OmegleApi {
   public suspend fun status(randomId: String): OmegleStatus
 
   /**
-   * Initializes a chat with a random partner.
+   * Connects with a stranger.
    *
    * @param options The connection options
    */
@@ -40,7 +40,7 @@ public interface OmegleApi {
   public suspend fun stopTyping(clientId: String)
 
   /**
-   * Sends a message to the other user.
+   * Sends a message to the stranger.
    *
    * @param clientId The client ID of the active chat
    * @param message The message to send
@@ -48,7 +48,7 @@ public interface OmegleApi {
   public suspend fun sendMessage(clientId: String, message: String)
 
   /**
-   * Asks Omegle to stop looking for a partner with common interests,
+   * Asks Omegle to stop looking for a stranger with common interests,
    * and instead select a random one.
    *
    * @param clientId The client ID of the active chat
