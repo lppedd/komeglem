@@ -28,7 +28,7 @@ val listener = object : OmegleRandomChatListener {
 
 val omegle = omegle(/* Optional custom OmegleApiFactory */)
 val session = omegle.newRandomChat(listener)
-session.connect("en")
+session.connect(language = "en")
 
 // Dispose the Omegle instance when not needed anymore
 omegle.dispose()
