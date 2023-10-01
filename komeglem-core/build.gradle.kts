@@ -8,17 +8,17 @@ plugins {
 }
 
 kotlin {
+  jvmToolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+    vendor = JvmVendorSpec.AMAZON
+  }
+
   explicitApi = ExplicitApiMode.Warning
 
   @Suppress("OPT_IN_USAGE")
   compilerOptions.run {
     languageVersion = KotlinVersion.KOTLIN_1_9
     apiVersion = KotlinVersion.KOTLIN_1_9
-  }
-
-  jvmToolchain {
-    languageVersion = JavaLanguageVersion.of(17)
-    vendor = JvmVendorSpec.AMAZON
   }
 
   jvm {
@@ -38,6 +38,7 @@ kotlin {
 
   js {
     browser()
+    binaries.library()
 
     // KT-52578
     yarn.ignoreScripts = false
