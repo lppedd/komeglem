@@ -69,15 +69,21 @@ internal class DefaultOmegleTopicsChatSession(
     omegleChatListener.onConnected(omegleChat)
   }
 
+  @Suppress("DuplicatedCode")
   private suspend fun onDisconnected(checkConnected: Boolean) {
-    if (checkConnected && !isConnected) {
+    val temp = isConnected
+
+    if (checkConnected && !temp) {
       throw OmegleSessionException("The session is not connected yet")
     }
 
     isConnected = false
-    omegleChat.disconnect()
-    eventLoopScope.coroutineContext.cancelChildren()
-    omegleChatListener.onDisconnected()
+
+    if (temp) {
+      omegleChat.disconnect()
+      eventLoopScope.coroutineContext.cancelChildren()
+      omegleChatListener.onDisconnected()
+    }
   }
 
   private suspend fun dispatchEvent(event: OmegleEvent) =

@@ -3,7 +3,6 @@ package com.github.lppedd.komeglem.internal
 import com.github.lppedd.komeglem.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.produce
-import kotlin.concurrent.Volatile
 import kotlin.jvm.JvmSynthetic
 import kotlin.time.Duration.Companion.seconds
 
@@ -15,8 +14,6 @@ internal class DefaultOmegleRandomChatSession(
   private val omegleChatListener: OmegleRandomChatListener,
 ) : OmegleRandomChatSession {
   private val eventLoopScope = OmegleEventLoopScope()
-
-  @Volatile
   private var isConnected = false
   private lateinit var omegleChat: OmegleRandomChat
 
@@ -72,15 +69,21 @@ internal class DefaultOmegleRandomChatSession(
     omegleChatListener.onConnected(omegleChat)
   }
 
+  @Suppress("DuplicatedCode")
   private suspend fun onDisconnected(checkConnected: Boolean) {
-    if (checkConnected && !isConnected) {
+    val temp = isConnected
+
+    if (checkConnected && !temp) {
       throw OmegleSessionException("The session is not connected yet")
     }
 
     isConnected = false
-    omegleChat.disconnect()
-    eventLoopScope.coroutineContext.cancelChildren()
-    omegleChatListener.onDisconnected()
+
+    if (temp) {
+      omegleChat.disconnect()
+      eventLoopScope.coroutineContext.cancelChildren()
+      omegleChatListener.onDisconnected()
+    }
   }
 
   private suspend fun dispatchEvent(event: OmegleEvent) =
