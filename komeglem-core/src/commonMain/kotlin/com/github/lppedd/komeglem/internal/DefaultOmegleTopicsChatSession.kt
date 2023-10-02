@@ -3,6 +3,7 @@ package com.github.lppedd.komeglem.internal
 import com.github.lppedd.komeglem.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.produce
+import kotlin.jvm.JvmSynthetic
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -19,15 +20,15 @@ internal class DefaultOmegleTopicsChatSession(
   override fun isConnected(): Boolean =
     isConnected
 
+  @JvmSynthetic
   @Suppress("DuplicatedCode")
-  override suspend fun connect(language: String, topic: String, vararg otherTopics: String) {
+  internal suspend fun connect(language: String, topics: List<String>) {
     if (isConnected) {
       throw OmegleSessionException("The session is already connected")
     }
 
-    val allTopics = listOf(topic) + otherTopics
-    val api = omegle.getApiFactory().create()
-    val connection = api.connect(OmegleConnectOptions(language, allTopics))
+    val api = omegle.apiFactory.create()
+    val connection = api.connect(OmegleConnectOptions(language, topics))
 
     // This chat will be sent out to listeners
     omegleChat = DefaultOmegleTopicsChat(api, connection, this)

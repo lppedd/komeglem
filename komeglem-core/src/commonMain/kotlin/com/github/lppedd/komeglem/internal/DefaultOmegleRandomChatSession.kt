@@ -4,6 +4,7 @@ import com.github.lppedd.komeglem.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.produce
 import kotlin.concurrent.Volatile
+import kotlin.jvm.JvmSynthetic
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -22,13 +23,14 @@ internal class DefaultOmegleRandomChatSession(
   override fun isConnected(): Boolean =
     isConnected
 
+  @JvmSynthetic
   @Suppress("DuplicatedCode")
-  override suspend fun connect(language: String) {
+  internal suspend fun connect(language: String) {
     if (isConnected) {
       throw OmegleSessionException("The session is already connected")
     }
 
-    val api = omegle.getApiFactory().create()
+    val api = omegle.apiFactory.create()
     val connection = api.connect(OmegleConnectOptions(language))
 
     // This chat will be sent out to listeners

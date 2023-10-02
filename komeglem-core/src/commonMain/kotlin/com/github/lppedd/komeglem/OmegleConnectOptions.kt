@@ -5,14 +5,14 @@ package com.github.lppedd.komeglem
  */
 public data class OmegleConnectOptions(
   /**
-   * The two-chars language code representing the preferred chat language.
+   * A two-chars language code representing the preferred chat language.
    *
    * Examples: `en`, `it`
    */
   val language: String = "en",
 
   /**
-   * An *optionally* non-empty list of topics that must be shared with the stranger.
+   * An *optionally* non-empty list of topics that must be common with the stranger.
    */
   val topics: List<String> = emptyList(),
 
